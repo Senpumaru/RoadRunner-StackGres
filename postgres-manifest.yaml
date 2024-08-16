@@ -1,0 +1,31 @@
+apiVersion: "acid.zalan.do/v1"
+kind: postgresql
+metadata:
+  name: timescaledb-roadrunner
+spec:
+  teamId: "roadrunner"
+  volume:
+    size: 5Gi
+  numberOfInstances: 1
+  users:
+    roadrunner:  # db owner
+    - superuser
+    - createdb
+  databases:
+    roadrunner: roadrunner
+  preparedDatabases:
+    roadrunner:
+      extensions:
+        timescaledb: public
+      schemas:
+        public:
+          defaultRoles: false
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+  postgresql:
+    version: "14"

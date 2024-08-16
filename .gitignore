@@ -1,0 +1,14 @@
+# Ignore TimescaleDB data directory
+timescaledb_data/*
+!timescaledb_data/.gitkeep
+bytebase-data/*
+
+# Ignore environment files
+.env
+
+# Ignore logs
+*.log
+
+# Ignore OS generated files
+.DS_Store
+Thumbs.db
