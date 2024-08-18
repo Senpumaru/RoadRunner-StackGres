@@ -1,0 +1,17 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: postgres-dev
+  namespace: road-runner
+spec:
+  entryPoints:
+    - web
+    - websecure
+  routes:
+    - match: Host(`dev.road-runner`)
+      kind: Rule
+      services:
+        - name: dev-rest
+          port: 5432
+  tls:
+    certResolver: default
