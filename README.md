@@ -1,6 +1,7 @@
 # RoadRunner - StackGres
 
 kubectl create namespace monitoring
+kubectl create namespace stackgres
 
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 
@@ -16,6 +17,4 @@ helm install --namespace stackgres stackgres-operator \
     --set-string adminui.service.type=LoadBalancer \
 stackgres-charts/stackgres-operator
 
-POD_NAME=$(kubectl get pods --namespace stackgres -l "app=stackgres-restapi" -o jsonpath="{.items[0].metadata.name}")
-
-kubectl port-forward pods/stackgres-restapi-7d84557bd8-hj8b6 8443:9443 -n stackgres
+kubectl port-forward pods/stackgres-restapi-XXXXXXXXXXXXXXXXX 8443:9443 -n stackgres
