@@ -1,0 +1,28 @@
+apiVersion: "acid.zalan.do/v1"
+kind: postgresql
+metadata:
+  name: prod-db
+  namespace: road-runner
+spec:
+  teamId: "roadrunner"
+  volume:
+    size: 10Gi
+  numberOfInstances: 2
+  users:
+    roadrunner:  # db owner
+    - superuser
+    - createdb
+  databases:
+    roadrunner: roadrunner
+  postgresql:
+    version: "14"
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+  patroni:
+    synchronous_mode: true
+    synchronous_node_count: 1
