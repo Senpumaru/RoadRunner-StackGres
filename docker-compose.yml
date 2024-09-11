@@ -1,25 +1,50 @@
 services:
-  timescaledb:
-    image: timescale/timescaledb:latest-pg14
+  # timescaledb:
+  #   image: timescale/timescaledb:latest-pg14
+  #   environment:
+  #     POSTGRES_DB: ${DB_NAME}
+  #     POSTGRES_USER: ${DB_USER}
+  #     POSTGRES_PASSWORD: ${DB_PASSWORD}
+  #     DB_NAME: ${DB_NAME}
+  #     DB_USER: ${DB_USER}
+  #     DB_PASSWORD: ${DB_PASSWORD}
+  #   ports:
+  #     - "${DB_PORT}:5432"
+  #   volumes:
+  #     - ./timescaledb_data:/var/lib/postgresql/data
+  #     - ./init-user-db.sh:/docker-entrypoint-initdb.d/init-user-db.sh
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
+
+  postgres:
+    image: postgres:14
+    container_name: roadrunner-postgres
     environment:
-      POSTGRES_DB: ${DB_NAME}
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      DB_NAME: ${DB_NAME}
-      DB_USER: ${DB_USER}
-      DB_PASSWORD: ${DB_PASSWORD}
-    ports:
-      - "${DB_PORT}:5432"
+      POSTGRES_DB: roadrunner
+      POSTGRES_USER: roadrunner
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
-      - ./timescaledb_data:/var/lib/postgresql/data
-      - ./init-user-db.sh:/docker-entrypoint-initdb.d/init-user-db.sh
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - roadrunner-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      test: ["CMD-SHELL", "pg_isready -U roadrunner"]
       interval: 10s
       timeout: 5s
       retries: 5
+
 volumes:
-  timescaledb_data:
+  # timescaledb_data:
+  #   driver: local
+  postgres_data:
     driver: local
-  bytebase-data:
-    driver: local
+  
+networks:
+  roadrunner-network:
+    external: true
